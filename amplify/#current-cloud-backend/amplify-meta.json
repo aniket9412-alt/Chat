@@ -35,8 +35,8 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-appsyncsubs-dev-201754-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiappsyncsubs"
       },
-      "lastPushTimeStamp": "2021-09-28T11:53:58.951Z",
-      "lastPushDirHash": "Qyq2p3L4Tf80KOG2R8Am7z4IgXI="
+      "lastPushTimeStamp": "2021-09-29T10:17:35.068Z",
+      "lastPushDirHash": "5gWuYCWT7oEKQIsGiuwJcQNk+EI="
     }
   }
 }

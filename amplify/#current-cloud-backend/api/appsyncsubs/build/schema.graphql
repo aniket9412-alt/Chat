@@ -7,6 +7,23 @@ type Message {
   updatedAt: AWSDateTime
 }
 
+type User {
+  id: ID!
+  userName: String!
+  password: String!
+  name: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Chat {
+  id: ID!
+  user1: ID!
+  user2: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
 enum ModelSortDirection {
   ASC
   DESC
@@ -118,6 +135,10 @@ enum ModelAttributeTypes {
 type Query {
   getMessage(id: ID!): Message
   listMessages(filter: ModelMessageFilterInput, limit: Int, nextToken: String): ModelMessageConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getChat(id: ID!): Chat
+  listChats(filter: ModelChatFilterInput, limit: Int, nextToken: String): ModelChatConnection
   messagesByChannelID(channelID: ID, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelMessageFilterInput, limit: Int, nextToken: String): ModelMessageConnection
 }
 
@@ -147,6 +168,12 @@ type Mutation {
   createMessage(input: CreateMessageInput!, condition: ModelMessageConditionInput): Message
   updateMessage(input: UpdateMessageInput!, condition: ModelMessageConditionInput): Message
   deleteMessage(input: DeleteMessageInput!, condition: ModelMessageConditionInput): Message
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createChat(input: CreateChatInput!, condition: ModelChatConditionInput): Chat
+  updateChat(input: UpdateChatInput!, condition: ModelChatConditionInput): Chat
+  deleteChat(input: DeleteChatInput!, condition: ModelChatConditionInput): Chat
 }
 
 input ModelMessageConditionInput {
@@ -164,6 +191,92 @@ type Subscription {
   onCreateMessage: Message @aws_subscribe(mutations: ["createMessage"])
   onUpdateMessage: Message @aws_subscribe(mutations: ["updateMessage"])
   onDeleteMessage: Message @aws_subscribe(mutations: ["deleteMessage"])
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateChat: Chat @aws_subscribe(mutations: ["createChat"])
+  onUpdateChat: Chat @aws_subscribe(mutations: ["updateChat"])
+  onDeleteChat: Chat @aws_subscribe(mutations: ["deleteChat"])
+}
+
+type ModelUserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  userName: ModelStringInput
+  password: ModelStringInput
+  name: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  userName: String!
+  password: String!
+  name: String!
+}
+
+input UpdateUserInput {
+  id: ID!
+  userName: String
+  password: String
+  name: String
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input ModelUserConditionInput {
+  userName: ModelStringInput
+  password: ModelStringInput
+  name: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+type ModelChatConnection {
+  items: [Chat]
+  nextToken: String
+}
+
+input ModelChatFilterInput {
+  id: ModelIDInput
+  user1: ModelIDInput
+  user2: ModelIDInput
+  and: [ModelChatFilterInput]
+  or: [ModelChatFilterInput]
+  not: ModelChatFilterInput
+}
+
+input CreateChatInput {
+  id: ID
+  user1: ID!
+  user2: ID!
+}
+
+input UpdateChatInput {
+  id: ID!
+  user1: ID
+  user2: ID
+}
+
+input DeleteChatInput {
+  id: ID!
+}
+
+input ModelChatConditionInput {
+  user1: ModelIDInput
+  user2: ModelIDInput
+  and: [ModelChatConditionInput]
+  or: [ModelChatConditionInput]
+  not: ModelChatConditionInput
 }
 
 input ModelStringKeyConditionInput {
